@@ -1,2 +1,3 @@
 streamlit
 # Add any other dependencies your app uses below
+reportlab
