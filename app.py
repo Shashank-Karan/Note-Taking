@@ -18,7 +18,7 @@ authenticator = stauth.Authenticate(
     credentials,
     "note_app_cookie", "abcdef", cookie_expiry_days=30
 )
-name, authentication_status, username = authenticator.login("Login", "main")
+name, authentication_status, username = authenticator.login("Login", "sidebar")
 if not authentication_status:
     st.stop()
 
