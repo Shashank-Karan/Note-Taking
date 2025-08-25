@@ -1,13 +1,32 @@
 import streamlit as st
+import streamlit_authenticator as stauth
 import json
 import os
 from datetime import datetime
 from note_manager import NoteManager
 from pdf_generator import PDFGenerator
 
-# Initialize session state
-if 'note_manager' not in st.session_state:
-    st.session_state.note_manager = NoteManager()
+
+# --- Authentication Setup ---
+credentials = {
+    "usernames": {
+        "user1": {"name": "User One", "password": "password1"},
+        "user2": {"name": "User Two", "password": "password2"},
+    }
+}
+authenticator = stauth.Authenticate(
+    credentials,
+    "note_app_cookie", "abcdef", cookie_expiry_days=30
+)
+name, authentication_status, username = authenticator.login("Login", "main")
+if not authentication_status:
+    st.stop()
+
+# Initialize session state per user
+user_notes_file = f"data/notes_{username}.json"
+if 'note_manager' not in st.session_state or st.session_state.get('user_notes_file') != user_notes_file:
+    st.session_state.note_manager = NoteManager(user_notes_file)
+    st.session_state.user_notes_file = user_notes_file
 if 'pdf_generator' not in st.session_state:
     st.session_state.pdf_generator = PDFGenerator()
 if 'current_note_id' not in st.session_state:
