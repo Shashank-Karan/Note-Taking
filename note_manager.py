@@ -6,7 +6,6 @@ import uuid
 
 class NoteManager:
     def __init__(self, data_file: str = "data/notes.json"):
-        # Use the provided data_file (per-user file for privacy)
         self.data_file = data_file
         self.ensure_data_directory()
     
